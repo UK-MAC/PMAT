@@ -1,0 +1,36 @@
+Performance Modelling Timing File
+ 
+PMTM Version, =, 1.0.0
+Application, =, DL_Poly v2.17.2
+Date, =, 23-03-2011
+Time, =, 18:03
+Run ID, =, 20110323-180317-0000020189
+NProcs, =,    4
+#Type, , mpi rank, , name, , value, (, StDev, ), , count
+Overhead, (, 0, ), start-stop, =, 0.107684E-05, (, 0.226179E-12, )
+Overhead, (, 0, ), pause-continue, =, 0.107304E-05, (, 0.136939E-16, )
+Parameter, : (, 0, ), fac, =,  1.00000    
+Parameter, : (, 1, ), fac, =,  1.00000    
+Parameter, : (, 2, ), fac, =,  1.00000    
+Parameter, : (, 3, ), fac, =,  1.00000    
+Parameter, : (, 0, ), eps, =, 0.100000E-05
+Parameter, : (, 1, ), eps, =, 0.100000E-05
+Parameter, : (, 2, ), eps, =, 0.100000E-05
+Parameter, : (, 3, ), eps, =, 0.100000E-05
+Parameter, : (, 0, ), tol, =,  3.41693    
+Parameter, : (, 1, ), tol, =,  3.41693    
+Parameter, : (, 2, ), tol, =,  3.41693    
+Parameter, : (, 3, ), tol, =,  3.41693    
+Timer, : (, 0, ), Ewald 1 Time, =, 0.544181E-02, (, 0.698346E-08, ), count,       550000, paused,            1
+Timer, : (, 1, ), Ewald 1 Time, =, 0.535304E-02, (, 0.101811E-09, ), count,       550000, paused,            1
+Timer, : (, 2, ), Ewald 1 Time, =, 0.536652E-02, (, 0.972357E-10, ), count,       550000, paused,            1
+Timer, : (, 3, ), Ewald 1 Time, =, 0.535228E-02, (, 0.107409E-09, ), count,       550000, paused,            1
+Timer, : (, average of all, ), Ewald 1 Time, =, 0.537841E-02, (, 0.319427E-08, ), count,      2200000, paused,            0
+Timer, : (, 0, ), Inter Angle Three-Body-Force Time, =, 0.107197E-02, (, 0.231521E-08, ), count,       550000, paused,            2
+Timer, : (, 1, ), Inter Angle Three-Body-Force Time, =, 0.105538E-02, (, 0.698154E-10, ), count,       550000, paused,            2
+Timer, : (, 2, ), Inter Angle Three-Body-Force Time, =, 0.105611E-02, (, 0.635321E-10, ), count,       550000, paused,            2
+Timer, : (, 3, ), Inter Angle Three-Body-Force Time, =, 0.105720E-02, (, 0.671705E-10, ), count,       550000, paused,            2
+Timer, : (, average of all, ), Inter Angle Three-Body-Force Time, =, 0.106017E-02, (, 0.675789E-09, ), count,      2200000, paused,            0
+Timer, : (, 0, ), Application Time, =,  5350.53    , (,  0.00000    , ), count,            1, paused,            0
+
+End of File

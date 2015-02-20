@@ -1,0 +1,41 @@
+Performance Modelling Timing File
+
+PMTM Version, =, 2.1.1
+Application, =, DL_Poly v2.17.2
+Date, =, 16-11-2011
+Time, =, 18:27
+Run ID, =, 20111116-182755-0000012999
+NProcs, =, 4
+Machine, =, WILLOW
+OS, =, Red_Hat, RHEL, 4.1.2-46, Linux_2.6.18-128.1.6.el5.Bull.6
+Compiler, =, Intel, Intel, 12.1
+MPI, =, Intel, IntelMPI, 4.0.3
+Processor, =, Xeon_X5550, Intel, x86_64, 2670, 4, 1
+Flags, =, -heap-arrays 64, -xHOST, -O3,
+#Type, , MPI Rank, , Name, , Value, (, StDev, ), , Count
+Overhead, (, 0, ), start-stop, =, 6.486475E-07, (, 4.396582E-13, )
+Overhead, (, 0, ), pause-continue, =, 6.410587E-07, (, 5.711874E-13, )
+Parameter, : (, 0, ), fac, =, 1.000000E+00
+Parameter, : (, 1, ), fac, =, 1.000000E+00
+Parameter, : (, 2, ), fac, =, 1.000000E+00
+Parameter, : (, 3, ), fac, =, 1.000000E+00
+Parameter, : (, 0, ), eps, =, 1.000000E-06
+Parameter, : (, 1, ), eps, =, 1.000000E-06
+Parameter, : (, 2, ), eps, =, 1.000000E-06
+Parameter, : (, 3, ), eps, =, 1.000000E-06
+Timer, : (, 0, ), Ewald 1 Time, =, 3.527902E-03, (, 4.816400E-09, ), count, 550000, paused, 1
+Timer, : (, 1, ), Ewald 1 Time, =, 3.600952E-03, (, 1.860848E-10, ), count, 550000, paused, 1
+Timer, : (, 2, ), Ewald 1 Time, =, 3.640079E-03, (, 1.897494E-10, ), count, 550000, paused, 1
+Timer, : (, 3, ), Ewald 1 Time, =, 3.532721E-03, (, 8.184720E-11, ), count, 550000, paused, 1
+Timer, : (, Rank Average, ), Ewald 1 Time, =, 3.575413E-03, (, 3.547011E-09, ), count, 2200000, paused, 0
+Timer, : (, Rank Maximum, ), Ewald 1 Time, =, 3.640079E-03, (, 1.897494E-10, ), count, 550000, paused, 0
+Timer, : (, Rank Minimum, ), Ewald 1 Time, =, 3.527902E-03, (, 4.816400E-09, ), count, 550000, paused, 0
+Timer, : (, 0, ), Inter Angle Three-Body-Force Time, =, 1.072274E-03, (, 1.979510E-09, ), count, 550000, paused, 2
+Timer, : (, 1, ), Inter Angle Three-Body-Force Time, =, 1.062385E-03, (, 9.668164E-11, ), count, 550000, paused, 2
+Timer, : (, 2, ), Inter Angle Three-Body-Force Time, =, 1.059164E-03, (, 9.142147E-11, ), count, 550000, paused, 2
+Timer, : (, 3, ), Inter Angle Three-Body-Force Time, =, 1.061178E-03, (, 6.843659E-11, ), count, 550000, paused, 2
+Timer, : (, Rank Average, ), Inter Angle Three-Body-Force Time, =, 1.063750E-03, (, 5.845518E-10, ), count, 2200000, paused, 0
+Timer, : (, Rank Maximum, ), Inter Angle Three-Body-Force Time, =, 1.072274E-03, (, 1.979510E-09, ), count, 550000, paused, 0
+Timer, : (, Rank Minimum, ), Inter Angle Three-Body-Force Time, =, 1.059164E-03, (, 9.142147E-11, ), count, 550000, paused, 0
+
+End of File

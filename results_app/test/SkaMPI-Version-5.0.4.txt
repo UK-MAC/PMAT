@@ -1,0 +1,48 @@
+2 nodes selected using 16 cores
+Reorder method 2
+
+# SKaMPI Version 5.0.4 rev. 355
+
+# Started at Thu May 20 15:03:54 2010
+
+
+#> set_min_repetitions(16)
+#> set_max_repetitions(100)
+#> #set_max_repetitions(32)
+#> set_max_relative_standard_error(0.03)
+#> 
+#> set_skampi_buffer(640kb)
+#> datatype = MPI_DOUBLE
+#> 
+#> num_procs = get_np()
+#> comm_all = comm(num_procs)
+#> 
+#> begin measurement "MPI_Allreduce-procs"
+#>    for procs = 2 to num_procs do
+#>       measure comm(procs) : Allreduce(4494, datatype, MPI_SUM)
+#>    od
+#> end measurement
+
+# begin result "MPI_Allreduce-procs"
+procs= 2    35952      18.9       0.0       16      18.9      18.1
+procs= 3    35952      55.4       0.5       16      55.4      51.0      49.7
+procs= 4    35952      32.2       0.2       16      32.1      32.0      31.4      31.2
+procs= 5    35952      64.5       0.2       16      64.5      60.7      54.0      61.4      57.7
+procs= 6    35952      64.9       0.1       32      64.8      60.3      64.5      60.3      58.4      58.4
+procs= 7    35952      58.3       0.2       16      58.3      54.0      58.3      53.8      57.3      53.2      47.2
+procs= 8    35952      53.0       0.2       16      48.7      49.2      48.4      48.5      52.4      53.0      51.9      51.9
+procs= 9    35952      86.4       1.2       16      85.8      81.6      71.8      74.7      70.8      75.5      73.1      79.4      73.2
+procs= 10    35952      79.9       0.4       16      79.6      74.8      79.5      75.1      66.6      66.6      72.7      72.7      72.4      72.3
+procs= 11    35952      91.6       0.5       16      89.4      84.8      91.3      87.3      88.0      84.0      77.8      90.8      86.1      66.7      69.1
+procs= 12    35952      85.1       0.5       16      84.1      79.6      83.7      79.4      84.1      79.7      83.9      79.6      67.8      67.8      67.9      67.7
+procs= 13    35952      92.9       0.7       16      92.9      88.7      91.9      87.9      91.3      86.9      91.3      86.8      83.5      80.3      70.8      71.7      79.7
+procs= 14    35952      90.9       0.9       16      84.9      80.6      84.6      80.2      85.5      81.3      85.5      81.0      89.6      85.9      88.6      84.4      77.3      77.2
+procs= 15    35952      84.4       0.3       16      83.5      78.9      83.0      78.8      83.3      79.3      83.3      79.0      81.0      77.1      81.1      76.9      81.4      77.3      71.5
+procs= 16    35952      79.7       0.3       16      75.1      73.4      71.2      71.2      72.7      72.3      72.0      71.7      79.5      77.9      68.1      60.7      63.8      69.2      75.3      75.0
+# end result "MPI_Allreduce-procs"
+# duration = 0.06 sec
+
+
+# Finished at Thu May 20 15:03:54 2010
+# Total runtime 0 seconds
+

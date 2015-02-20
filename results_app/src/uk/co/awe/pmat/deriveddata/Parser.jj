@@ -1,0 +1,336 @@
+
+options {
+    JAVA_UNICODE_ESCAPE = true;
+    ERROR_REPORTING = true;
+    STATIC = false;
+    JDK_VERSION = "1.6";
+}
+
+PARSER_BEGIN(DerivedDataParser)
+
+package uk.co.awe.analysis.deriveddata;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import static uk.co.awe.analysis.deriveddata.ParserValues.*;
+
+/**
+ * A parser to allow for the create of derived data fields in the analysis. This
+ * parses a text input and uses it to identify functions, constants and data
+ * variables. These are wrapped in <code>DerivedData</code> objects which can
+ * be evaluated at a later time to generate the derived data required.
+ *
+ * The parser is built with JavaCC and the Java code should <strong>not</strong>
+ * be edited directly.
+ *
+ * @author AWE Plc copyright 2013
+ */
+public final class DerivedDataParser {
+    
+    private static final Map<String, Integer> OpPrecedence;
+    
+    static {
+        OpPrecedence = new HashMap<String, Integer>();
+        OpPrecedence.put( "+", 0 );
+        OpPrecedence.put( "-", 0 );
+        OpPrecedence.put( "/", 1 );
+        OpPrecedence.put( "*", 1 );
+    }
+    
+    private TreeMap<String, Variable> variableMap = new TreeMap<String, Variable>();
+    private TreeMap<String, Property> propertyMap = new TreeMap<String, Property>();
+    private TreeMap<String, Function> functionMap = new TreeMap<String, Function>();
+
+    /**
+     * Set the mapping from strings to functions that will be used when parsing
+     * function tokens. A function token is an unquoted string followed by a
+     * left parenthesis "(".
+     *
+     * @param functionMap The function map to use
+     */
+    public void setFunctions(Map<String, Function> functionMap) {
+        this.functionMap = new TreeMap<String, Function>(String.CASE_INSENSITIVE_ORDER);
+        this.functionMap.putAll(functionMap);
+    }
+
+    /**
+     * Set the mapping from strings to properties that will be used when parsing
+     * property tokens. A property token is an unquoted string. This acesses a
+     * property value of a run, i.e. the SystemState.Machine or Application.
+     *
+     * @param propertyMap The property map to use
+     */
+    public void setProperties(Map<String, Property> propertyMap) {
+        this.propertyMap = new TreeMap<String, Property>(String.CASE_INSENSITIVE_ORDER);
+        this.propertyMap.putAll(propertyMap);
+    }
+
+    /**
+     * Set the mapping from strings to variables that will be used when parsing
+     * variable tokens. A variable is a single quoted string. This references
+     * the values stored in a result, i.e. 'Application Time'.
+     *
+     * @param variableMap The variable map to use
+     */
+    public void setVariables(Map<String, Variable> variableMap) {
+        this.variableMap = new TreeMap<String, Variable>(String.CASE_INSENSITIVE_ORDER);
+        this.variableMap.putAll(variableMap);
+    }
+	
+    private Function getFunction(String funcName) throws ParseException {
+        if (functionMap.containsKey(funcName)) {
+            return functionMap.get(funcName).newInstance();
+        } else {
+            throw new ParseException("Unknown function: " + funcName);
+        }
+    }
+	
+    private Variable getVariable(String varName) throws ParseException {
+        varName = varName.substring(1, varName.length() - 1); // strip quotes
+        if (variableMap.containsKey(varName)) {
+            return variableMap.get(varName);
+        } else {
+            throw new ParseException("Unknown variable: " + varName);
+        }
+    }
+    
+    private Property getProperty(String entName) throws ParseException {
+        if (propertyMap.containsKey(entName)) {
+            return propertyMap.get(entName);
+        } else {
+            throw new ParseException("Unknown property: " + entName);
+        }
+    }
+
+    private static DerivedData evaluateBinOp(String op, DerivedData lhs, DerivedData rhs)
+            throws ParseException, InvalidArgumentsException {
+        Function func;
+        if      (op.equals("+")) { func = new Operators.Add(); }
+        else if (op.equals("-")) { func = new Operators.Subtract(); }
+        else if (op.equals("/")) { func = new Operators.Divide(); }
+        else if (op.equals("*")) { func = new Operators.Multiply(); }
+        else                     { throw new ParseException("Unknown operator " + op); }
+        func.bind(lhs, rhs);
+        return func;
+    }
+
+    private static DerivedData evaluateBinOps(List<String> bops, List<DerivedData> nums)
+            throws ParseException, InvalidArgumentsException {
+
+        assert nums.size() == bops.size() + 1;
+
+        DerivedData res = recursiveBinOp(bops, nums); 
+
+        bops.clear();
+        nums.clear();
+
+        return res;
+    }
+    
+    private static DerivedData recursiveBinOp(List<String> ops, List<DerivedData> nums)
+            throws ParseException, InvalidArgumentsException {
+
+        assert nums.size() == ops.size() + 1;
+
+        if (ops.isEmpty()) {
+            assert (nums.size() == 1);
+            return nums.get(0);
+        } else if (ops.size() == 1) {
+            assert nums.size() == 2;
+            return evaluateBinOp(ops.get(0), nums.get(0), nums.get(1));
+        } else {
+            int maxPrec = getMaxPrecedence(ops);
+
+            int opIdx;
+            for (opIdx = 0; opIdx < ops.size(); ++opIdx) {
+                if (OpPrecedence.get(ops.get(opIdx)).equals(maxPrec) ) {
+                    break;
+                }
+            }
+
+            String op = ops.get(opIdx);
+            DerivedData lhs = nums.get(opIdx);
+            DerivedData rhs = nums.get(opIdx + 1);
+            
+            ops.remove(opIdx);
+            nums.remove(opIdx);
+            nums.remove(opIdx);
+            nums.add(opIdx, evaluateBinOp(op, lhs, rhs));
+
+            return recursiveBinOp(ops, nums);
+        }
+    }
+
+    private static int getMaxPrecedence(List<String> ops) {
+        int max = 0;
+        for (String op : ops) {
+            max = Math.max(max, OpPrecedence.get(op));
+        }
+        return max;
+    }
+}
+
+PARSER_END(DerivedDataParser)
+
+SKIP:
+{
+    < " " >
+|   < "\t" >
+|   < "\n" >
+|   < "\r" >
+|   < "\r\n" >
+}
+
+TOKEN:
+{
+    < PLUS     : "+" >
+|   < MINUS    : "-" >
+|   < DIVIDE   : "/" >
+|   < TIMES    : "*" >
+|   < LBRACKET : "(" >
+|   < RBRACKET : ")" >
+|   < COMMA    : "," >
+}
+
+TOKEN:
+{
+    < NUMBER    : <INTEGER> | <DECIMAL> >
+|   < #INTEGER  : (<DIGIT>)+ (<EXPONENT>)? >
+|   < #DIGIT    : ["0"-"9"] >
+|   < DECIMAL   :
+        (<DIGIT>)* "." (<DIGIT>)+ (<EXPONENT>)?
+    |   (<DIGIT>)+ "."
+    >
+|   < #EXPONENT : ["e","E"] ("-")? (<DIGIT>)+ >
+|   < VARIABLE  : "'" (<CHAR>)+ "'" >
+|   < #ALPHA    : ["a"-"z","A"-"Z"] >
+|   < #CHAR     : <ALPHA> | <DIGIT> | [" ","_","+","-","/","*","(",")",",","."] >
+|   < NAME      : <ALPHA> (<ALPHA>|<DIGIT>)* >
+|   < STRING    : "\"" (<CHAR>)+ "\"" >
+|   < ENTITY    : <NAME> ("." <NAME>)+ >
+}
+
+DerivedData parse() throws InvalidArgumentsException:
+{
+    Token t;
+    DerivedData v;
+}
+{
+    v = expression( null, null )
+    <EOF>
+    { return v; }
+}
+
+DerivedData expression(List<String> bops, List<DerivedData> nums) throws InvalidArgumentsException:
+{
+    Token t;
+    DerivedData v;
+}
+{
+    {
+        if (bops == null) bops = new ArrayList<String>();
+        if (nums == null) nums = new ArrayList<DerivedData>();
+    }
+    (
+        v = value()
+        { nums.add(v); }
+        ( LOOKAHEAD(2) binop( bops, nums ) )*
+        { v = evaluateBinOps(bops, nums); }    
+    |
+        <LBRACKET>
+        v = expression( null, null )
+        <RBRACKET>
+        { nums.add(v); }
+        ( LOOKAHEAD(2) binop( bops, nums ) )*
+        { v = evaluateBinOps(bops, nums); }
+    )
+    { return v; }
+}
+
+void binop(List<String> bops, List<DerivedData> nums) throws InvalidArgumentsException:
+{
+    Token t;
+    DerivedData v;
+}
+{
+    (
+        t = <PLUS>
+    |   t = <MINUS>
+    |   t = <TIMES>
+    |   t = <DIVIDE>
+    )
+    {
+        bops.add(t.image);
+    }
+    v = expression(bops, nums)
+    {
+        nums.add(v);
+    }
+}
+
+DerivedData value() throws InvalidArgumentsException:
+{
+    Token t;
+    DerivedData v;
+    String op = null;
+    List<DerivedData> args = new ArrayList<DerivedData>();
+}
+{
+    (
+        t = <PLUS>
+        |
+        t = <MINUS>
+        { op = t.image; }
+    )?
+    (
+        LOOKAHEAD(2)
+      	t = <NAME>
+      	<LBRACKET>
+        (
+            v = expression( null, null )
+            { args.add(v); }
+            (
+                <COMMA>
+                v = expression( null, null )
+                { args.add(v); }
+            )*
+        )?
+      	<RBRACKET>
+      	{
+            Function func = getFunction(t.image);
+            func.bind(args.toArray(new DerivedData[0]));
+            v = func;
+        }
+    |
+        t = <NAME>
+        { v = getProperty(t.image); }
+    | 
+        t = <NUMBER>
+        { v = new Constant<Double>(Double.parseDouble(t.image)); }
+    |
+        t = <VARIABLE>
+        { v = getVariable(t.image); }
+    |
+        t = <STRING>
+        {
+            String str = t.image.substring(1, t.image.length() - 1); // strip quotes
+            v = new Constant<String>(str);
+        }
+    |
+        t = <ENTITY>
+        { v = getProperty(t.image); }
+    )
+    {
+        if ("-".equals(op) ) {
+            Function neg = new Operators.Negative();
+            neg.bind(v);
+            return neg;
+        }
+        else return v;
+    }
+}
+

@@ -1,0 +1,17 @@
+DELETE FROM `Result`;
+DELETE FROM `Parameter`;
+DELETE FROM `SubRun`;
+DELETE FROM `RunFlags`;
+DELETE FROM `Run`;
+DELETE FROM `Flags`;
+DELETE FROM `Processor`;
+DELETE FROM `OperatingSystem`;
+DELETE FROM `MPI`;
+DELETE FROM `Machine`;
+DELETE FROM `Compiler`;
+DELETE FROM `Application`;
+DELETE FROM `AnalysisCriteria`;
+DELETE FROM `AnalysisDerivedData`;
+DELETE FROM `AnalysisGraph`;
+DELETE FROM `AnalysisAxisLabel`;
+DELETE FROM `Analysis`;
