@@ -1,0 +1,32 @@
+Performance Modelling Timing File
+
+PMTM Version, =, 2.0.0
+Application, =, CHIM
+Date, =, 27-05-2011
+Time, =, 17:28
+Run ID, =, 20110527-172810-0000016840
+NProcs, =, 1
+System, =, Red_Hat, RHEL, 4.1.2-46, Linux_2.6.18-128.1.6.el5.Bull.6
+Compiler, =, Intel, Intel, 11.1
+MPI, =, Intel, IntelMPI, 4.0.3
+#Type, , MPI Rank, , Name, , Value, (, StDev, ), , Count
+Overhead, (, 0, ), start-stop, =, 6.264186E-07, (, 7.297461E-13, )
+Overhead, (, 0, ), pause-continue, =, 6.228149E-07, (, 4.045528E-13, )
+Parameter, : (, 0, ), meshx, =, 120
+Parameter, : (, 0, ), meshy, =, 120
+Parameter, : (, 0, ), max SN, =, 8
+Parameter, : (, 0, ), min SN, =, 8
+Timer, : (, 0, ), PMTM_CHIM_WALLCLOCK, =, 4.661114E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Average, ), PMTM_CHIM_WALLCLOCK, =, 4.661114E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Maximum, ), PMTM_CHIM_WALLCLOCK, =, 4.661114E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Minimum, ), PMTM_CHIM_WALLCLOCK, =, 4.661114E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, 0, ), PMTM_CHIMMAIN, =, 4.661113E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Average, ), PMTM_CHIMMAIN, =, 4.661113E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Maximum, ), PMTM_CHIMMAIN, =, 4.661113E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Minimum, ), PMTM_CHIMMAIN, =, 4.661113E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, 0, ), PMTM_CHIM_BVALUE, =, 4.603225E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Average, ), PMTM_CHIM_BVALUE, =, 4.603225E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Maximum, ), PMTM_CHIM_BVALUE, =, 4.603225E+01, (, 0.000000E+00, ), count, 1, paused, 0
+Timer, : (, Rank Minimum, ), PMTM_CHIM_BVALUE, =, 4.603225E+01, (, 0.000000E+00, ), count, 1, paused, 0
+
+End of File

@@ -1,0 +1,26 @@
+Name:    PMTM Import Script
+Author:  AWE plc
+Date:    13/07/2015
+
+pmtm_import.py is a Python script which can read in PMTM files and save them into the database.
+
+It consists of three files:
+ > pmtm_import.py - the main application, reads in a file and then saves it to the database.
+ > pmtm_reader.py - contains the code to read in the PMTM file and set a load of fields to be equal to the data read.
+ > pmtm_sql.py    - contains the code to take the data read in with pmtm_reader.py and save it to the database using MySQLdb library.
+
+Setup:
+ > Edit the Connection class in pmtm_sql.py to point your SQL Database with the correct username and password (this assumes you have created a database called "Ichnaea" to store the results.
+ > Edit pmtm_import.py to direct PmtmStoreDirectory to the folder you wish to store a copy of results to.
+
+Tests:
+ > pmtm_read_tests.py - tests that the script can read in all the different version of PMTM ouput files.
+
+To run:
+
+  ./pmtm_import.py <PMTM file name>
+
+Options:
+
+  -d/--debug    prints debug information on run
+  -x/--dry-run  reads file and checks data but doesn't save to database
